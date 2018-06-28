@@ -362,6 +362,8 @@ class CourseWaffleFlag(WaffleFlag):
             from .models import WaffleFlagCourseOverrideModel
             cache_key = u'{}.{}'.format(namespaced_flag_name, unicode(course_key))
             force_override = self.waffle_namespace._cached_flags.get(cache_key)
+            # from pdb import set_trace
+            # set_trace()
 
             if force_override is None:
                 force_override = WaffleFlagCourseOverrideModel.override_value(namespaced_flag_name, course_key)

@@ -43,6 +43,8 @@ class WaffleFlagCourseOverrideModel(ConfigurationModel):
             the override_choice.
 
         """
+        # from pdb import set_trace
+        # set_trace()
         if not course_id or not waffle_flag:
             return cls.ALL_CHOICES.unset
 

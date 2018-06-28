@@ -160,6 +160,21 @@ class CourseListUserThrottle(UserRateThrottle):
         return super(CourseListUserThrottle, self).allow_request(request, view)
 
 
+import cProfile
+
+def profileit(name):
+    def inner(func):
+        def wrapper(*args, **kwargs):
+            prof = cProfile.Profile()
+            retval = prof.runcall(func, *args, **kwargs)
+            # Note use of name from outer scope
+            prof.dump_stats(name)
+            return retval
+        return wrapper
+    return inner
+
+
+
 @view_auth_classes(is_authenticated=False)
 class CourseListView(DeveloperErrorViewMixin, ListAPIView):
     """
@@ -241,6 +256,7 @@ class CourseListView(DeveloperErrorViewMixin, ListAPIView):
     #   - https://github.com/elastic/elasticsearch/commit/8b0a863d427b4ebcbcfb1dcd69c996c52e7ae05e
     results_size_infinity = 10000
 
+    @profileit("/edx/app/edxapp/edx-platform/profile_for_func1_001")
     def get_queryset(self):
         """
         Return a list of courses visible to the user.
@@ -249,12 +265,18 @@ class CourseListView(DeveloperErrorViewMixin, ListAPIView):
         if not form.is_valid():
             raise ValidationError(form.errors)
 
+        from timeit import default_timer as timer
+
+        start = timer()
         db_courses = list_courses(
             self.request,
             form.cleaned_data['username'],
             org=form.cleaned_data['org'],
             filter_=form.cleaned_data['filter_'],
         )
+        end = timer()
+        print '++++++++'
+        print end-start
 
         if not settings.FEATURES['ENABLE_COURSEWARE_SEARCH'] or not form.cleaned_data['search_term']:
             return db_courses

@@ -310,6 +310,30 @@ class CourseMode(models.Model):
         return [mode.to_tuple() for mode in found_course_modes]
 
     @classmethod
+    def unpaid_modes_for_course(cls, course_id):
+        """
+        Returns a list of non-expired free modes for a course ID.
+
+        If no modes have been set, returns an empty list.
+
+        Args:
+            course_id (CourseKey): The course to find paid modes for.
+
+        Returns:
+            A list of CourseModes with a minimum price.
+
+        """
+        found_course_modes = cls.objects.filter(
+            Q(course_id=course_id) &
+            Q(min_price=0) &
+            (
+                Q(_expiration_datetime__isnull=True) |
+                Q(_expiration_datetime__gte=now())
+            )
+        )
+        return [mode.to_tuple() for mode in found_course_modes]
+
+    @classmethod
     @ns_request_cached(CACHE_NAMESPACE)
     def modes_for_course(cls, course_id, include_expired=False, only_selectable=True):
         """

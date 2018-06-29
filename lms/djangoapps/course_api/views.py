@@ -256,7 +256,8 @@ class CourseListView(DeveloperErrorViewMixin, ListAPIView):
     #   - https://github.com/elastic/elasticsearch/commit/8b0a863d427b4ebcbcfb1dcd69c996c52e7ae05e
     results_size_infinity = 10000
 
-    @profileit("/edx/app/edxapp/edx-platform/profile_for_func1_001")
+    @profileit("/tmp/profile_for_courselistview")
+    #@profileit("/edx/app/edxapp/edx-platform/profile_for_func1_001")
     def get_queryset(self):
         """
         Return a list of courses visible to the user.
@@ -266,8 +267,12 @@ class CourseListView(DeveloperErrorViewMixin, ListAPIView):
             raise ValidationError(form.errors)
 
         from timeit import default_timer as timer
+        from logging import getLogger
+
+        log = getLogger(__name__)
 
         start = timer()
+        log.info('course list view: start: %s.', start)
         db_courses = list_courses(
             self.request,
             form.cleaned_data['username'],
@@ -275,8 +280,16 @@ class CourseListView(DeveloperErrorViewMixin, ListAPIView):
             filter_=form.cleaned_data['filter_'],
         )
         end = timer()
+        time_spent = end - start
+
+
+        log.info('course list view: end: %s.', end)
+        log.info('Total time spent in course list view %s.', time_spent)
+
         print '++++++++'
-        print end-start
+        print time_spent
+
+
 
         if not settings.FEATURES['ENABLE_COURSEWARE_SEARCH'] or not form.cleaned_data['search_term']:
             return db_courses

@@ -142,21 +142,31 @@ class SystemTestSuite(PytestSuite):
         if self.disable_capture:
             cmd.append("-s")
 
-        if self.processes == -1:
-            cmd.append('-n auto')
-            cmd.append('--dist=loadscope')
-        elif self.processes != 0:
-            cmd.append('-n {}'.format(self.processes))
-            cmd.append('--dist=loadscope')
-
-        if not self.randomize:
-            cmd.append('-p no:randomly')
-        if self.eval_attr:
-            cmd.append("-a '{}'".format(self.eval_attr))
+        # if self.processes == -1:
+        #     cmd.append('-n auto')
+        #     cmd.append('--dist=loadscope')
+        # elif self.processes != 0:
+        #     cmd.append('-n {}'.format(self.processes))
+        #     cmd.append('--dist=loadscope')
+        #
+        # if not self.randomize:
+        #     cmd.append('-p no:randomly')
+        #if self.eval_attr:
+        #    cmd.append("-a '{}'".format(self.eval_attr))
 
         cmd.extend(self.passthrough_options)
-        cmd.append(self.test_id)
 
+        #cmd.append(self.test_id)
+        cmd.append('openedx/features')
+        cmd.append('-d')
+        ip_addresses = ['10.11.10.54']
+        for ip in ip_addresses:
+            cmd.append('--tx ssh=ubuntu@{}//python="source /edx/app/edxapp/edxapp_env; python"//chdir=/home/ubuntu'.format(ip))
+        cmd.append('--rsyncdir .')
+        cmd.append('--rsyncignore test_root/')
+        print(cmd)
+
+        import pdb; pdb.set_trace()
         return self._under_coverage_cmd(cmd)
 
     @property
@@ -237,7 +247,13 @@ class LibTestSuite(PytestSuite):
             cmd.append("-s")
         if self.eval_attr:
             cmd.append("-a '{}'".format(self.eval_attr))
-        cmd.append(self.test_id)
+        #cmd.append(self.test_id)
+        cmd.append('openedx/features')
+        cmd.append('-d')
+        cmd.append('--tx ssh=ubuntu@10.11.10.102//chdir=/edx/app/edxapp/edx-platform')
+        cmd.append('--rsyncdir /edx/app/edxapp/edx-platform /edx/app/edxapp/edx-platform')
+
+        print(cmd)
 
         return self._under_coverage_cmd(cmd)
 

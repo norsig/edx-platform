@@ -18,6 +18,7 @@ class JenkinsContainerManager():
         self.ecs = boto3.client('ecs', region)
         self.cluster_name = cluster
 
+
     def spin_up_containers(self, number_of_containers, task_name, subnets, security_groups, public_ip_enabled, launch_type):
         """
         Spins up jenkins-worker containers and generates two .txt files, one containing the IP
@@ -95,12 +96,18 @@ class JenkinsContainerManager():
                 "Timed out waiting to spin up all containers."
             )
 
+        logger.info("Successfully booted up {} containers.".format(number_of_containers))
+
+        ip_list_string = " ".join(ip_addresses)
+        logger.info("Container IP list: {}".format(ip_list_string))
         ip_list_file = open("jenkins_container_ip_list.txt", "w")
-        ip_list_file.write(" ".join(ip_addresses))
+        ip_list_file.write(ip_list_string)
         ip_list_file.close()
 
+        task_arn_list_string = " ".join(task_arns)
+        logger.info("Container task arn list: {}".format(task_arn_list_string))
         task_arn_file = open("jenkins_container_task_arns.txt", "w")
-        task_arn_file.write(" ".join(task_arns))
+        task_arn_file.write(task_arn_list_string)
         task_arn_file.close()
 
 

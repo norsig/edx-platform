@@ -122,7 +122,7 @@ class Command(BaseCommand):
         #     ]
         #     courses = list(set(courses) & set(only_courses))
         LOGGER.info("Found a command {com}".format(com=options.get("courses")))
-        courses = set(list(options.get("courses")))
+        courses = set(options.get("courses").split(","))
 
         # Add in organizations from the course keys, to ensure
         # we're including orgs with different capitalizations

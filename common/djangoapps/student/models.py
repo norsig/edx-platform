@@ -1569,11 +1569,7 @@ class CourseEnrollment(models.Model):
         """
         try:
             user = User.objects.get(email=email)
-            record = cls.objects.get(user=user, course_id=course_id)
-            if record.refundable():
-                return record.update_enrollment(mode=CourseMode.AUDIT, is_active=False, skip_refund=False)
-            else:
-                return record.update_enrollment(is_active=False, skip_refund=True)
+            return cls.unenroll(user, course_id)
         except User.DoesNotExist:
             log.error(
                 u"Tried to unenroll email %s from course %s, but user not found",

@@ -11,6 +11,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 
+from course_modes.models import CourseMode
 from openedx.core.djangoapps.commerce.utils import ecommerce_api_client, is_commerce_service_configured
 from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 from openedx.core.djangoapps.theming import helpers as theming_helpers
@@ -240,9 +241,10 @@ def refund_seat(course_enrollment, change_mode=False):
             mode=course_enrollment.mode,
             user=enrollee,
         )
-        if change_mode:
-            
-
+        if change_mode and CourseMode.can_auto_enroll(course_id=course_key_str):
+            course_enrollment.update_enrollment(mode=CourseMode.auto_enroll_mode(course_id=course_key_str),
+                                                is_active=False, skip_refund=True)
+            course_enrollment.save()
     else:
         log.info('No refund opened for user [%s], course [%s]', enrollee.id, course_key_str)
 

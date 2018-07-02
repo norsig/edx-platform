@@ -270,9 +270,8 @@ class Command(BaseCommand):
             row_count += 1
 
             if row_count % 50000 == 0:
-                gc.collect()
-
-        writer.close()
+                # gc.collect()
+                file_handle.flush()
 
         # Log the number of rows we processed
         LOGGER.info("Retrieved {num_rows} records.".format(num_rows=row_count))

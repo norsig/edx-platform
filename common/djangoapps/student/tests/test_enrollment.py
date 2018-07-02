@@ -73,7 +73,7 @@ class EnrollmentTest(UrlResetMixin, SharedModuleStoreTestCase):
         # We should also be enrolled as the honor mode.
         # Since honor and audit are currently offered together this precedence must
         # be maintained.
-        (['honor', 'verified', 'audit'], 'course_modes_choose', CourseMode.HONOR),
+        (['honor', 'verified', 'audit'], 'course_modes_choose', CourseMode.AUDIT),
 
         # Professional ed
         # Expect that we're sent to the "choose your track" page

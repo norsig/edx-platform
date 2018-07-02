@@ -218,8 +218,8 @@ class CourseModeModelTest(TestCase):
 
     @ddt.data(
         ([], None),
-        (["honor", "audit", "verified"], "honor"),
-        (["honor", "audit"], "honor"),
+        (["honor", "audit", "verified"], "audit"),
+        (["honor", "audit"], "audit"),
         (["audit", "verified"], "audit"),
         (["professional"], None),
         (["no-id-professional"], None),

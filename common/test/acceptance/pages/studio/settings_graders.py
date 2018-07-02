@@ -81,8 +81,7 @@ class GradingPage(SettingsPage):
             length = len(self.q(css=self.grade_ranges))
             click_css(self, '.new-grade-button', require_notification=False)
             self.wait_for(
-                lambda: len(self.q(css=self.grade_ranges)) == length + 1 and
-                len(self.q(css=self.grade_ranges)) < 6,
+                lambda: len(self.q(css=self.grade_ranges)) == length + 1,
                 description="Grades are added"
             )
 

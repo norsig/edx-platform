@@ -13,6 +13,7 @@ class GradingPage(SettingsPage):
     """
 
     url_path = "settings/grading"
+    grade_ranges = '.grades .grade-specific-bar'
 
     def is_browser_on_page(self):
         return self.q(css='body.grading').present

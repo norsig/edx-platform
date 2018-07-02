@@ -160,18 +160,18 @@ class CourseListUserThrottle(UserRateThrottle):
         return super(CourseListUserThrottle, self).allow_request(request, view)
 
 
-import cProfile
-
-def profileit(name):
-    def inner(func):
-        def wrapper(*args, **kwargs):
-            prof = cProfile.Profile()
-            retval = prof.runcall(func, *args, **kwargs)
-            # Note use of name from outer scope
-            prof.dump_stats(name)
-            return retval
-        return wrapper
-    return inner
+# import cProfile
+#
+# def profileit(name):
+#     def inner(func):
+#         def wrapper(*args, **kwargs):
+#             prof = cProfile.Profile()
+#             retval = prof.runcall(func, *args, **kwargs)
+#             # Note use of name from outer scope
+#             prof.dump_stats(name)
+#             return retval
+#         return wrapper
+#     return inner
 
 
 
@@ -256,7 +256,7 @@ class CourseListView(DeveloperErrorViewMixin, ListAPIView):
     #   - https://github.com/elastic/elasticsearch/commit/8b0a863d427b4ebcbcfb1dcd69c996c52e7ae05e
     results_size_infinity = 10000
 
-    @profileit("/tmp/profile_for_courselistview")
+    #@profileit("/tmp/profile_for_courselistview")
     #@profileit("/edx/app/edxapp/edx-platform/profile_for_func1_001")
     def get_queryset(self):
         """

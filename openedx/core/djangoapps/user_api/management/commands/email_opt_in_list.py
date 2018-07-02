@@ -268,6 +268,8 @@ class Command(BaseCommand):
             })
             row_count += 1
 
+        writer.close()
+
         # Log the number of rows we processed
         LOGGER.info("Retrieved {num_rows} records.".format(num_rows=row_count))
 
@@ -283,6 +285,7 @@ class Command(BaseCommand):
         """
         while True:
             rows = cursor.fetchmany(self.QUERY_INTERVAL)
+            LOGGER.info("Fetched {rows} rows".format(rows=len(rows)))
             if not rows:
                 break
             for row in rows:

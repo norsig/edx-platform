@@ -76,12 +76,12 @@ class GradingPage(SettingsPage):
         """
         Add new grade ranges in grades bar.
         """
-        self.wait_for_element_visibility('.grades', 'Grade bar not visible')
+        self.wait_for_element_visibility('.grades', 'Grade bar is visible')
         for _ in range(grades_to_add):
             length = len(self.q(css=self.grade_ranges))
             click_css(self, '.new-grade-button', require_notification=False)
             self.wait_for(
-                lambda: len(self.q(css=self.grade_ranges)) == length + 1 or
+                lambda: len(self.q(css=self.grade_ranges)) == length + 1 and
                 len(self.q(css=self.grade_ranges)) < 6,
                 description="Grades are added"
             )

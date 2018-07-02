@@ -54,8 +54,8 @@ class GradingPageTest(StudioCourseTest):
         Scenario: Users can only have up to 5 grading ranges
             Given I have opened a new course in Studio
             And I am viewing the grading settings
-            When I add "6" new grades
-            Then I see I now have "5" grades
+            When I try to add more than 5 grades
+            Then I see I have only "5" grades
         """
         self.grading_page.add_grades(6)
         self.grading_page.save()
@@ -69,13 +69,15 @@ class GradingPageTest(StudioCourseTest):
             Given I have opened a new course in Studio
             And I am viewing the grading settings
             When I add "2" new grade
-            Then Grade list has "ABCF" grades
+            Then Grade list has "A,B,C,F" grades
             And I delete a grade
-            Then Grade list has "ABF" grades
+            Then Grade list has "A,B,F" grades
         """
         self.grading_page.add_grades(2)
+        self.grading_page.save()
         grades_alphabets = self.grading_page.get_grade_alphabets()
         self.assertEqual(grades_alphabets, ['A', 'B', 'C', 'F'])
         self.grading_page.remove_grades(1)
+        self.grading_page.save()
         grades_alphabets = self.grading_page.get_grade_alphabets()
         self.assertEqual(grades_alphabets, ['A', 'B', 'F'])

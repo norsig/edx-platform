@@ -203,13 +203,14 @@ def refund_entitlement(course_entitlement):
         return False
 
 
-def refund_seat(course_enrollment):
+def refund_seat(course_enrollment, change_mode=False):
     """
     Attempt to initiate a refund for any orders associated with the seat being unenrolled,
     using the commerce service.
 
     Arguments:
         course_enrollment (CourseEnrollment): a student enrollment
+        change_mode (Boolean): change the course mode to free mode or not
 
     Returns:
         A list of the external service's IDs for any refunds that were initiated
@@ -239,6 +240,9 @@ def refund_seat(course_enrollment):
             mode=course_enrollment.mode,
             user=enrollee,
         )
+        if change_mode:
+            
+
     else:
         log.info('No refund opened for user [%s], course [%s]', enrollee.id, course_key_str)
 

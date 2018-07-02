@@ -294,6 +294,10 @@ class DashboardPage(PageObject, HelpMixin):
         """
         Gets the length error text
         """
+        self.wait_for_element_visibility(
+            '#course_creation_error>p',
+            'Length error is present'
+        )
         return self.q(css='#course_creation_error>p').text[0]
 
 

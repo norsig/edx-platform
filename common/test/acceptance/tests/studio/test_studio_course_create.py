@@ -155,16 +155,12 @@ class CreateCourseTest(AcceptanceTest):
         Then form validation should not pass
         And I see error for combined length longer than 65
         """
-        self.auth_page.visit()
-        self.dashboard_page.visit()
-        self.assertFalse(self.dashboard_page.has_course(
-            org='testOrg', number=self.course_number, run=self.course_run
-        ))
         course_org = "012345678901234567890123456789"
         course_number = "012345678901234567890123456789"
         course_run = "0123456"
+        self.auth_page.visit()
+        self.dashboard_page.visit()
         self.assertTrue(self.dashboard_page.new_course_button.present)
-
         self.dashboard_page.click_new_course_button()
         self.assertTrue(self.dashboard_page.is_new_course_form_visible())
         self.dashboard_page.fill_new_course_form(
@@ -185,11 +181,11 @@ class CreateCourseTest(AcceptanceTest):
         Form validation should pass
         Then I see the course listing page with newly created course
         """
-        course_name = ''.join(random.choice(string.uppercase) for i in range(66))
+        course_name = ''.join(random.choice(string.ascii_uppercase) for _ in range(66))
         self.auth_page.visit()
         self.dashboard_page.visit()
         self.assertFalse(self.dashboard_page.has_course(
-            org=course_name, number=self.course_number, run=self.course_run
+            org=self.course_org, number=self.course_number, run=self.course_run
         ))
         self.dashboard_page.click_new_course_button()
         self.assertTrue(self.dashboard_page.is_new_course_form_visible())

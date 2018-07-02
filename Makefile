@@ -36,7 +36,7 @@ pull_translations: ## pull translations from Transifex
 	i18n_tool validate
 
 requirements: ## install development environment requirements
-	pip install -qr requirements/edx/development.txt --exists-action w
+	pip install -r requirements/edx/development.txt --exists-action w
 
 upgrade: export CUSTOM_COMPILE_COMMAND=make upgrade
 upgrade: ## update the pip requirements files to use the latest releases satisfying our constraints

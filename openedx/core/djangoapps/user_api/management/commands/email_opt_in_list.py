@@ -112,19 +112,21 @@ class Command(BaseCommand):
         # Retrieve all the courses for the org.
         # If we were given a specific list of courses to include,
         # filter out anything not in that list.
-        courses = self._get_courses_for_org(org_list)
-        only_courses = options.get("courses")
-
-        if only_courses is not None:
-            only_courses = [
-                CourseKey.from_string(course_key.strip())
-                for course_key in only_courses.split(",")
-            ]
-            courses = list(set(courses) & set(only_courses))
+        # courses = self._get_courses_for_org(org_list)
+        # only_courses = options.get("courses")
+        #
+        # if only_courses is not None:
+        #     only_courses = [
+        #         CourseKey.from_string(course_key.strip())
+        #         for course_key in only_courses.split(",")
+        #     ]
+        #     courses = list(set(courses) & set(only_courses))
+        courses = set(options.get("courses"))
 
         # Add in organizations from the course keys, to ensure
         # we're including orgs with different capitalizations
-        org_list = list(set(org_list) | set(course.org for course in courses))
+        # org_list = list(set(org_list) | set(course.org for course in courses))
+        org_list = list(set(org_list))
 
         # If no courses are found, abort
         if not courses:

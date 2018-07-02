@@ -267,11 +267,12 @@ class CourseListView(DeveloperErrorViewMixin, ListAPIView):
             raise ValidationError(form.errors)
 
         from timeit import default_timer as timer
-        from logging import getLogger
+        import logging
 
-        log = getLogger(__name__)
+        log = logging.getLogger(__name__)
 
         start = timer()
+        log.info('============================================')
         log.info('course list view: start: %s.', start)
         db_courses = list_courses(
             self.request,
@@ -285,6 +286,7 @@ class CourseListView(DeveloperErrorViewMixin, ListAPIView):
 
         log.info('course list view: end: %s.', end)
         log.info('Total time spent in course list view %s.', time_spent)
+        log.info('===========================================')
 
         print '++++++++'
         print time_spent

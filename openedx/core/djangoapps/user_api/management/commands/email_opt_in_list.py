@@ -25,6 +25,7 @@ import contextlib
 import csv
 import datetime
 import logging
+import gc
 import os.path
 import time
 
@@ -267,6 +268,9 @@ class Command(BaseCommand):
                 "preference_set_datetime": pref_set_datetime,
             })
             row_count += 1
+
+            if row_count % 50000 == 0:
+                gc.collect()
 
         writer.close()
 

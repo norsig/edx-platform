@@ -270,7 +270,8 @@ class Command(BaseCommand):
             row_count += 1
 
             if row_count % 50000 == 0:
-                # gc.collect()
+                LOGGER.info("Written {num_rows} records".format(num_rows=row_count))
+                gc.collect()
                 file_handle.flush()
 
         # Log the number of rows we processed
@@ -288,7 +289,6 @@ class Command(BaseCommand):
         """
         while True:
             rows = cursor.fetchmany(self.QUERY_INTERVAL)
-            LOGGER.info("Fetched {rows} rows".format(rows=len(rows)))
             if not rows:
                 break
             for row in rows:

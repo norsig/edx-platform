@@ -7,7 +7,6 @@ from pavelib.utils.test import utils as test_utils
 from pavelib.utils.test.suites.suite import TestSuite
 from pavelib.utils.envs import Env
 
-
 __test__ = False  # do not collect
 
 
@@ -155,18 +154,17 @@ class SystemTestSuite(PytestSuite):
         #    cmd.append("-a '{}'".format(self.eval_attr))
 
         cmd.extend(self.passthrough_options)
-
         #cmd.append(self.test_id)
+
         cmd.append('openedx/features')
         cmd.append('-d')
-        ip_addresses = ['10.11.10.54']
+        ip_addresses = ['10.11.10.26']
         for ip in ip_addresses:
-            cmd.append('--tx ssh=ubuntu@{}//python="source /edx/app/edxapp/edxapp_env; python"//chdir=/home/ubuntu'.format(ip))
-        cmd.append('--rsyncdir .')
-        cmd.append('--rsyncignore test_root/')
+            cmd.append('--tx ssh=ubuntu@{}//python="source /edx/app/edxapp/edxapp_env; python"//chdir=/home/ubuntu/edx-platform'.format(ip))
+        #cmd.append('--rsyncdir openedx/features')
+        #cmd.append('--rsyncignore tmp*')
         print(cmd)
 
-        import pdb; pdb.set_trace()
         return self._under_coverage_cmd(cmd)
 
     @property
@@ -250,7 +248,7 @@ class LibTestSuite(PytestSuite):
         #cmd.append(self.test_id)
         cmd.append('openedx/features')
         cmd.append('-d')
-        cmd.append('--tx ssh=ubuntu@10.11.10.102//chdir=/edx/app/edxapp/edx-platform')
+        cmd.append('--tx ssh=ubuntu@10.11.10.25//chdir=/edx/app/edxapp/edx-platform')
         cmd.append('--rsyncdir /edx/app/edxapp/edx-platform /edx/app/edxapp/edx-platform')
 
         print(cmd)

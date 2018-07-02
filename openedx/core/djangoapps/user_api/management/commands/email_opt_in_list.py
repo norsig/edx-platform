@@ -288,7 +288,7 @@ class Command(BaseCommand):
         """
         while True:
             rows = cursor.fetchmany(self.QUERY_INTERVAL)
-            LOGGER.info("Fetched {rows} rows".format(rows=len(rows)))
+            # LOGGER.info("Fetched {rows} rows".format(rows=len(rows)))
             if not rows:
                 break
             for row in rows:
